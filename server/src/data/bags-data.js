@@ -1,0 +1,131 @@
+const bags = [
+    {
+        "id": 1,
+        "name": "CHANEL CF BLACK",
+        "brand": "CHANEL",
+        "country": "France",
+        "color": "BLACK",
+        "endDate": "2025-01-31T15:23:00Z",
+        "startPrice": 1000,
+        "size": "SMALL",
+        "src": "https://www.garderobeitaly.com/wp-content/uploads/2024/03/IMG_6552.jpeg",
+        "lastBidderId": 4,
+        "currentPrice": 2000
+    },
+    {
+        "id": 2,
+        "name": "HERMÉS Birkin BLACK",
+        "brand": "HERMÉS",
+        "country": "France",
+        "color": "BLACK",
+        "endDate": "2025-02-29T15:23:00Z",
+        "startPrice": 1000,
+        "size": "MEDIUM",
+        "src": "https://www.christies.com/img/LotImages/2024/HGK/2024_HGK_22767_3886_000(a_limited_edition_matte_black_alligator_amp_togo_leather_touch_birkin_d6481770110810).jpg?mode=max",
+        "lastBidderId": 3,
+        "currentPrice": 2000
+    },
+    {
+        "id": 3,
+        "name": "HERMÉS Kelly YELLOW",
+        "brand": "HERMÉS",
+        "country": "France",
+        "color": "YELLOW",
+        "endDate": "2025-10-31T15:23:00Z",
+        "startPrice": 1000,
+        "size": "MEDIUM",
+        "src": "https://www.birkin4u.com/wp-content/uploads/2021/06/461a0c25248ff84.jpg",
+        "lastBidderId": 3,
+        "currentPrice": 3000
+    },
+    {
+        "id": 4,
+        "name": "Yves Saint Laurent CLASSIC BLACK",
+        "brand": "Yves Saint Laurent",
+        "country": "France",
+        "color": "BLACK",
+        "endDate": "2025-11-30T15:23:00Z",
+        "startPrice": 1000,
+        "size": "SMALL",
+        "src": "https://media.neimanmarcus.com/f_auto,q_auto:low,ar_4:5,c_fill,dpr_2.0,w_420/01/nm_3333330_100106_m",
+    },
+    {
+        "id": 5,
+        "name": "Louis Vuitton CLASSIC PATTERN",
+        "brand": "Louis Vuitton",
+        "country": "France",
+        "color": "BROWN",
+        "endDate": "2025-11-30T15:23:00Z",
+        "startPrice": 1000,
+        "size": "MEDIUM",
+        "src": "https://res.cloudinary.com/www-prendo-me/image/upload/v1523954087/Prendo/lv-30-front-min-min.jpg"
+    },
+    {
+        "id": 6,
+        "name": "GUCCI",
+        "brand": "GUCCI",
+        "country": "Italy",
+        "color": "GREY",
+        "endDate": "2025-11-30T15:23:00Z",
+        "startPrice": 1000,
+        "size": "SMALL",
+        "src": "https://imgservice.suning.cn/uimg1/b2c/tm/ovyJVRt-WHTj4E3L1-faEg.jpg_800w_800h_4e"
+    },
+    {
+        "id": 7,
+        "name": "PRADA HANDBAG CARAMEL",
+        "brand": "PRADA",
+        "country": "Italy",
+        "color": "CARAMEL",
+        "endDate": "2025-11-30T15:23:00Z",
+        "startPrice": 1000,
+        "size": "MEDIUM",
+        "src": "https://www.prada.com/content/dam/pradabkg_products/1/1BA/1BA802/2CYSF0018/1BA802_2CYS_F0018_V_YO0_SLF.jpg",
+    },
+    {
+        "id": 8,
+        "name": "Christian Dior DIANA WHITE",
+        "brand": "Christian Dior",
+        "country": "France",
+        "color": "WHITE",
+        "endDate": "2025-11-30T15:23:00Z",
+        "startPrice": 1000,
+        "size": "SMALL",
+        "src": "https://s.yimg.com/zp/images/CC903FBA5052D048449084732F4AF4730850735C"
+    },
+    {
+        "id": 9,
+        "name": "CÉLINE",
+        "brand": "CÉLINE",
+        "country": "France",
+        "color": "MARRON",
+        "endDate": "2025-11-30T15:23:00Z",
+        "startPrice": 1000,
+        "size": "LARGE",
+        "src": "https://www.celine.com/on/demandware.static/-/Sites-masterCatalog/default/dw98bf4585/images/large/116853ENY.04LU_1_SS24_P2_W_V3.jpg"
+    },
+    {
+        "id": 10,
+        "name": "BOTTEGA VENETA",
+        "brand": "BOTTEGA VENETA",
+        "country": "France",
+        "color": "BLACK",
+        "endDate": "2025-11-30T15:23:00Z",
+        "startPrice": 1000,
+        "size": "LARGE",
+        "src": "https://www.brooklynblonde.com/wp-content/uploads/2023/09/bottega2.jpg"
+    },
+    {
+        "id": 11,
+        "name": "miu miu",
+        "brand": "miu miu",
+        "country": "Italy",
+        "color": "PINK",
+        "endDate": "2025-11-30T15:23:00Z",
+        "startPrice": 1000,
+        "size": "SMALL",
+        "src": "https://www.miumiu.com/content/dam/miumiubkg_products/5/5BC/5BC125/N88F0638/5BC125_N88_F0638_V_OOY_SLF.jpg/_jcr_content/renditions/cq5dam.web.hE7E3DA.2000.2000.jpg"
+    }
+]
+
+export default bags;

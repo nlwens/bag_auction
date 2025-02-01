@@ -1,0 +1,208 @@
+### Test as a user
+###
+### Login
+POST {{protocol}}{{host}}:{{port}}/auth
+Content-Type: application/json
+Accept: application/json
+
+{
+  "username": "user1",
+  "password": "psw4user1"
+}
+
+> {%
+    client.test("login successful", function(){
+        client.assert(response.status === 200, "Response is not correct!");
+        const token = response.body.token;
+        client.assert(token, "Token not found!");
+        client.global.set("userToken", token);
+    })
+%}
+
+###
+### Place a new bid
+POST {{protocol}}{{host}}:{{port}}/bags/4/bids
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "bagId": 4,
+  "bidderId": 3,
+  "bidAmount": 3000
+}
+
+> {%
+    client.test("Bid successfully placed", function(){
+        client.assert(response.status === 201, "Response is not correct!");
+    })
+%}
+
+###
+### Place an amount that smaller than the competitors
+POST {{protocol}}{{host}}:{{port}}/bags/3/bids
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "bagId": 3,
+  "bidderId": 3,
+  "bidAmount": 100
+}
+
+> {%
+    client.test("Bid amount must be bigger than start price!", function(){
+        client.assert(response.status === 406, "Response is not correct!");
+    })
+%}
+
+###
+### Place an amount that in wrong format
+POST {{protocol}}{{host}}:{{port}}/bags/3/bids
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "bagId": 3,
+  "bidderId": 3,
+  "bidAmount": "two thousand"
+}
+
+> {%
+    client.test("Bid amount is not a valid number!", function(){
+        client.assert(response.status === 406, "Response is not correct!");
+    })
+%}
+
+###
+### Place an amount in an item that auction has already stopped
+POST {{protocol}}{{host}}:{{port}}/bags/2/bids
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "bagId": 2,
+  "bidderId": 3,
+  "bidAmount": 3000
+}
+
+> {%
+    client.test("This auction has already ended!", function(){
+        client.assert(response.status === 400, "Response is not correct!");
+    })
+%}
+
+###
+### Place a bid without a token
+POST {{protocol}}{{host}}:{{port}}/bags/3/bids
+Content-Type: application/json
+Accept: application/json
+
+{
+  "bagId": 3,
+  "bidderId": 3,
+  "bidAmount": 5000
+}
+
+> {%
+    client.test("Access denied", function(){
+        client.assert(response.status === 401, "Response is not correct!");
+    })
+%}
+
+###
+### add a new bag
+POST {{protocol}}{{host}}:{{port}}/bags
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "name": "new bag",
+  "brand": "CHANEL",
+  "country": "FRANCE",
+  "color": "WHITE",
+  "endDate": "2024-10-30T15:23:00Z",
+  "startPrice": 1500,
+  "src": "randomSrc"
+}
+
+> {%
+    client.test("Access denied: Admin Only!", function(){
+        client.assert(response.status === 401, "Response is not correct!");
+    })
+%}
+
+###
+### modify a new bag
+PUT {{protocol}}{{host}}:{{port}}/bags/:id
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "name": "new bag",
+  "brand": "CHANEL",
+  "country": "FRANCE",
+  "color": "WHITE",
+  "endDate": "2024-10-30T15:23:00Z",
+  "startPrice": 1500,
+  "src": "randomSrc"
+}
+
+> {%
+    client.test("Access denied", function(){
+        client.assert(response.status === 401, "Response is not correct!");
+    })
+%}
+
+###
+### fetch bags
+GET {{protocol}}{{host}}:{{port}}/bags
+Content-Type: application/json
+Accept: application/json
+
+> {%
+    client.test("Bags successfully fetched", function(){
+        client.assert(response.status === 200, "Response is not correct!");
+    })
+%}
+
+###
+### fetch bag
+GET {{protocol}}{{host}}:{{port}}/bags/2
+Content-Type: application/json
+Accept: application/json
+
+> {%
+    client.test("Bag successfully fetched", function(){
+        client.assert(response.status === 200, "Response is not correct!");
+    })
+%}
+
+###
+### fetch unexisted bag
+GET {{protocol}}{{host}}:{{port}}/bags/20
+Content-Type: application/json
+Accept: application/json
+
+> {%
+    client.test("No bag is found", function(){
+        client.assert(response.status === 404, "Response is not correct!");
+    })
+%}
+
+###
+### fetch bids
+GET {{protocol}}{{host}}:{{port}}/bags/2/bids
+Content-Type: application/json
+Accept: application/json
+
+> {%
+    client.test("bids successfully fetched", function(){
+        client.assert(response.status === 200, "Response is not correct!");
+    })
+%}

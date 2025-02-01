@@ -1,0 +1,205 @@
+### Test as an admin
+###
+### Login
+POST {{protocol}}{{host}}:{{port}}/auth
+Content-Type: application/json
+Accept: application/json
+
+{
+  "username": "admin1",
+  "password": "psw4admin1"
+}
+
+> {%
+    client.test("login successful", function(){
+        client.assert(response.status === 200, "Response is not correct!");
+        const token = response.body.token;
+        client.assert(token, "Token not found!");
+        client.global.set("adminToken", token);
+    })
+%}
+
+###
+### Place a new bid
+POST {{protocol}}{{host}}:{{port}}/bags/4/bids
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "bagId": 4,
+  "bidderId": 3,
+  "bidAmount": 3000
+}
+
+> {%
+    client.test("Access denied", function(){
+        client.assert(response.status === 403, "Response is not correct!");
+    })
+%}
+
+###
+### Add a new bag
+POST {{protocol}}{{host}}:{{port}}/bags
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "name": "CHANEL WHITE",
+  "brand": "CHANEL",
+  "country": "France",
+  "color": "WHITE",
+  "endDate": "2024-12-30T15:23:00Z",
+  "startPrice": 1000,
+  "src": "randomsrc" }
+
+> {%
+    client.test("New bag added!", function(){
+        client.assert(response.status === 201, "Response is not correct!");
+    })
+%}
+
+###
+### Add a new bag with negative start price
+POST {{protocol}}{{host}}:{{port}}/bags
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "name": "CHANEL WHITE",
+  "brand": "CHANEL",
+  "country": "France",
+  "color": "WHITE",
+  "endDate": "2024-12-30T15:23:00Z",
+  "startPrice": -1000,
+  "src": "randomsrc" }
+
+> {%
+    client.test("startPrice must be a positive number", function(){
+        client.assert(response.status === 406, "Response is not correct!");
+    })
+%}
+
+###
+### Add a new bag with incomplete data
+POST {{protocol}}{{host}}:{{port}}/bags
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "brand": "CHANEL",
+  "country": "France",
+  "color": "WHITE",
+  "startPrice": -1000
+}
+
+> {%
+    client.test("All fields are required", function(){
+        client.assert(response.status === 400, "Response is not correct!");
+    })
+%}
+
+###
+### Add a new bag without valid token
+POST {{protocol}}{{host}}:{{port}}/bags
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "CHANEL WHITE",
+  "brand": "CHANEL",
+  "country": "France",
+  "color": "WHITE",
+  "endDate": "2024-10-30T15:23:00Z",
+  "startPrice": -1000,
+  "src": "randomsrc" }
+
+> {%
+    client.test("Access denied", function(){
+        client.assert(response.status === 401, "Response is not correct!");
+    })
+%}
+
+###
+### Modify a bag
+PUT {{protocol}}{{host}}:{{port}}/bags/1
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "name": "CHANEL WHITE",
+  "brand": "CHANEL",
+  "country": "France",
+  "color": "WHITE",
+  "endDate": "2024-12-30T15:23:00Z",
+  "startPrice": 1000
+}
+
+> {%
+    client.test("Bag successfully modified", function(){
+        client.assert(response.status === 200, "Response is not correct!");
+    })
+%}
+
+###
+### Modify a bag with end date earlier than today
+PUT {{protocol}}{{host}}:{{port}}/bags/1
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "name": "CHANEL WHITE",
+  "brand": "CHANEL",
+  "country": "France",
+  "color": "WHITE",
+  "endDate": "2024-10-30T15:23:00Z",
+  "startPrice": 1000
+}
+
+> {%
+    client.test("End date must be a future date", function(){
+        client.assert(response.status === 406, "Response is not correct!");
+    })
+%}
+
+###
+### Modify a bag with a invalid price number
+PUT {{protocol}}{{host}}:{{port}}/bags/1
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "name": "CHANEL WHITE",
+  "brand": "CHANEL",
+  "country": "France",
+  "color": "WHITE",
+  "endDate": "2024-12-30T15:23:00Z",
+  "startPrice": -1000
+}
+
+> {%
+    client.test("Start price must be a positive number", function(){
+        client.assert(response.status === 406, "Response is not correct!");
+    })
+%}
+
+
+###
+### Delete a bag
+DELETE {{protocol}}{{host}}:{{port}}/bags/1
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+> {%
+    client.test("Bag with ID 1 has been deleted", function(){
+        client.assert(response.status === 200, "Response is not correct!");
+    })
+%}
+
